@@ -1,0 +1,46 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+{% if request.user.is_authenticated %}
+<body class="container">
+<table class="table">
+    <thead>
+    <tr>
+      {% if user.is_staff %}
+      <th scope="col">User</th>
+      {% endif %}
+      <th scope="col">Product</th>
+      <th scope="col">numbers</th>
+      <th scope="col">total price</th>
+  </thead>
+  <tbody>
+  {% for obj in page_obj %}
+    <tr>
+      {% if obj.user == request.user or user.is_staff %}
+        {% if user.is_staff %}
+        <td>{{ obj.user }}</td>
+        {% endif %}
+      <td>{{ obj.product.name }}</td>
+        <td>{{ obj.quantity }}</td>
+        <td>{{ obj.total }}</td>
+        <td>
+          <form method="post" action="{% url 'order-delete' obj.pk %}">
+          {% csrf_token %}
+          <input type="submit" class="btn btn-primary" value="Delete">
+          </form>
+
+        </td>
+        <td>
+          <form method="post" action="{% url 'return-create' %}">
+          {% csrf_token %}
+          <input type="hidden" value="{{ obj.pk }}" name="order">
+          <input type="submit" class="btn btn-primary" value="Return">
+          </form>
+        </td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+</table>
+</body>
+{% endif %}
+{% endblock %}

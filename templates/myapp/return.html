@@ -1,0 +1,39 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<body class="container">
+<table class="table">
+    <thead>
+    <tr>
+      <th scope="col">user</th>
+      <th scope="col">product</th>
+      <th scope="col">quantity</th>
+      <th scope="col">total price</th>
+      <th scope="col">total created_at</th>
+  </thead>
+  <tbody>
+  {% for obj in page_obj %}
+    <tr>
+      <td>{{ obj.order.user }}</td>
+      <td>{{ obj.order.product.name }}</td>
+      <td>{{ obj.order.quantity }}</td>
+      <td>{{ obj.order.total }}</td>
+      <td>{{ obj.created_at|date:"d.m.Y" }}</td>
+      <td>
+        <form method="post" action="{% url 'confirm-return' %}">
+          {% csrf_token %}
+          <input type="hidden" value="{{ obj.order.id }}" name="order">
+          <input type="hidden" value="{{ obj.order.quantity }}" name="quantity">
+          <input type="hidden" value="{{ obj.order.total }}" name="total">
+          <input type="hidden" value="{{ obj.order.product.number_of_product }}" name="number_of_product">
+          <input type="hidden" value="{{ obj.order.user.wallet }}" name="wallet">
+          <input type="hidden" value="{{ obj.order.user.id }}" name="user">
+          <input type="hidden" value="{{ obj.order.product.id }}" name="product_id">
+          <input type="submit" class="btn btn-primary" value="Confirm">
+          </form>
+      </td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+{% endblock %}
