@@ -1,0 +1,34 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<body class="container">
+<table class="table">
+    <thead>
+    <tr>
+      <th scope="col">user</th>
+      <th scope="col">product</th>
+      <th scope="col">quantity</th>
+      <th scope="col">total price</th>
+      <th scope="col">total created_at</th>
+  </thead>
+  <tbody>
+  {% for obj in page_obj %}
+    <tr>
+      <td>{{ obj.order.user }}</td>
+      <td>{{ obj.order.product.name }}</td>
+      <td>{{ obj.order.quantity }}</td>
+      <td>{{ obj.order.total }}</td>
+      <td>{{ obj.created_at|date:"d.m.Y" }}</td>
+
+<!--      <td>-->
+<!--        <form method="post" action="{% url 'order-delete' obj.pk %}">-->
+<!--          {% csrf_token %}-->
+<!--          <input type="hidden" value="{{ order.total }}" name="total">-->
+<!--          <input type="submit" class="btn btn-primary" value="Delete">-->
+<!--          </form>-->
+<!--      </td>-->
+    </tr>
+    {% endfor %}
+</table>
+</body>
+{% endblock %}
