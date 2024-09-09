@@ -1,0 +1,32 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<body class="container">
+<table class="table">
+    <thead>
+    <tr>
+      <th scope="col">Product</th>
+      <th scope="col">description</th>
+      <th scope="col">price</th>
+      <th scope="col"></th>
+    </tr>
+    </thead>
+
+        <tbody>
+            <td>{{ product.name }}</td>
+            <td>{{ product.description }}</td>
+            <td>{{ product.price }}</td>
+            {% if user.is_authenticated %}
+            <td><form method="post" action="{% url 'save_order' %}">
+                {% csrf_token %}
+                <input type="hidden" value="{{ product.id }}" name="id">
+                <td> {{ create_form }}</td>
+            <td> <button type="submit" class="btn btn-primary">Order</button></td>
+            </form>
+            {% endif %}
+            </td>
+        </tbody>
+
+</table>
+</body>
+{% endblock %}
